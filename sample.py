@@ -16,7 +16,16 @@ import logging
 from sklearn.externals import joblib
 from sklearn.metrics import roc_auc_score
 
-dataFolder = "/home/vleksin/data/kaggle_afraud_dataset"
+#TODO: Move away from global vars. These should be defined on command line or main()
+
+#Location of the input training/testing data
+dataFolder = "data"
+input_test = "avito_test.tsv"
+input_train = "avito_train.tsv"
+
+#Location of the generated output
+outputFolder = "results"
+output_file = "avito_starter_solution.csv"
 
 stopwords= frozenset(word.decode('utf-8') for word in nltk.corpus.stopwords.words("russian") if word!="не")    
 stemmer = SnowballStemmer('russian')
@@ -125,11 +134,11 @@ def processData(fileName, featureIndexes={}, itemsLimit=None):
 def main():
     """ Generates features and fits classifier. """
     
-#     featureIndexes = processData(os.path.join(dataFolder,"avito_train.tsv"), itemsLimit=300000)
-#     trainFeatures,trainTargets, trainItemIds=processData(os.path.join(dataFolder,"avito_train.tsv"), featureIndexes, itemsLimit=300000)
-#     testFeatures, testItemIds=processData(os.path.join(dataFolder,"avito_test.tsv"), featureIndexes)
-#    joblib.dump((trainFeatures, trainTargets, trainItemIds, testFeatures, testItemIds), os.path.join(dataFolder,"train_data.pkl"))
-    trainFeatures, trainTargets, trainItemIds, testFeatures, testItemIds = joblib.load(os.path.join(dataFolder,"train_data.pkl"))
+    featureIndexes = processData(input_train, itemsLimit=300000)
+    trainFeatures,trainTargets, trainItemIds=processData(input_train, featureIndexes, itemsLimit=300000)
+    testFeatures, testItemIds=processData(input_test, featureIndexes)
+#   joblib.dump((trainFeatures, trainTargets, trainItemIds, testFeatures, testItemIds), os.path.join(dataFolder,"train_data.pkl"))
+#   trainFeatures, trainTargets, trainItemIds, testFeatures, testItemIds = joblib.load(os.path.join(dataFolder,"train_data.pkl"))
     logging.info("Feature preparation done, fitting model...")
     clf = SGDClassifier(    loss="log", 
                             penalty="l2", 
@@ -143,9 +152,8 @@ def main():
 
     
     logging.info("Write results...")
-    output_file = "avito_starter_solution.csv"
     logging.info("Writing submission to %s" % output_file)
-    f = open(os.path.join(dataFolder,output_file), "w")
+    f = open(os.path.join(outputFolder,output_file), "w")
     f.write("id\n")
     
     for pred_score, item_id in sorted(zip(predicted_scores, testItemIds), reverse = True):
