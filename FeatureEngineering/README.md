@@ -13,7 +13,7 @@ import FeatureTest
 categoricalFeatureTest(feature, response, featureName="featureName", writeFile=True)
 
 # To test function use the built in tester:
-testCategoricalFeatutreTest()
+testCategoricalFeatutreTest(10000)
 
 ```
 
@@ -30,4 +30,4 @@ Feature_4 n=2174 response rate=0.0947562097516
 ```
 
 At the same time, a plot is also generated:
-[Sample plot](TestedFeature-Feature_2014-07-19_233604.png)
+![Sample plot](TestedFeature-Feature_2014-07-19_233604.png)
