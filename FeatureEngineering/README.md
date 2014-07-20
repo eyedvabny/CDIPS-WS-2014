@@ -12,24 +12,24 @@ import FeatureTest
 # Using with your data:
 categoricalFeatureTest(feature, response, featureName="featureName", writeFile=True)
 
-# To test function use the built in tester:
-testCategoricalFeatutreTest()
+# To test function use the built in tester that simulate a feature with 4 values
+testCategoricalFeatutreTest(length=1000)
 
 ```
 
 **Output:**
 ```
 Number of items: 1000
-Average response rate: 0.117
-Number of features: 4
-Features:
-Value_4 n=210 response rate=0.1
-Value_1 n=580 response rate=0.120689655172
-Value_3 n=105 response rate=0.142857142857
-Value_2 n=105 response rate=0.104761904762
+Average response rate: 0.094
+The tested feature has: 4 values
+List of values:
+Value_4 n=214 response rate=0.0654205607477
+Value_1 n=545 response rate=0.104587155963
+Value_3 n=114 response rate=0.0964912280702
+Value_2 n=127 response rate=0.0944881889764
 
 ```
 
 At the same time, a barchart is also generated:
 
-![Sample plot](TestedFeature-Test Feature_2014-07-19_235335.png)
+![Sample plot](TestedFeature-Test Feature_2014-07-19_235854.png)

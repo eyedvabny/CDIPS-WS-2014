@@ -73,7 +73,7 @@ def categoricalFeatureTest (feature, response, featureName = "Feature", writeFil
     # Printing report:
     print "Number of items: "+str(len(feature))    
     print "Average response rate: "+str(averageResponse)    
-    print "Number of features: "+str(featuresCount)+"\nFeatures:"
+    print "The tested feature has: "+str(featuresCount)+" values\nList of values:"
     for key in featureRatio.keys():
         print key+" n="+str(featureCount[key])+" response rate="+str(featureRatio[key])
 
