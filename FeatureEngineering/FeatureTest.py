@@ -80,14 +80,14 @@ def categoricalFeatureTest (feature, response, featureName = "Feature", writeFil
 
 
 # Testing the tester :)
-def testCategoricalFeatutreTest(length):
+def testCategoricalFeatutreTest(length=1000):
     """
     This function just generates a random distribution of features and responses
     and calls the tester.
     """
 
     # generating random feature set
-    featureSet = ["Feature_1"]*5 + ["Feature_2"] + ["Feature_3"] + ["Feature_4"]*2
+    featureSet = ["Value_1"]*5 + ["Value_2"] + ["Value_3"] + ["Value_4"]*2
     feature = [random.choice(featureSet) for r in range(length)]
     
     # generating random feature set

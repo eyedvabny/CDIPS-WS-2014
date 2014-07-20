@@ -1,4 +1,4 @@
-# Script collection for feature engeineering
+# Script collection for feature engineering
 
 
 ### categoricalFeatureTest
@@ -13,21 +13,23 @@ import FeatureTest
 categoricalFeatureTest(feature, response, featureName="featureName", writeFile=True)
 
 # To test function use the built in tester:
-testCategoricalFeatutreTest(10000)
+testCategoricalFeatutreTest()
 
 ```
 
 **Output:**
 ```
-Number of items: 10000
-Average response rate: 0.0998
+Number of items: 1000
+Average response rate: 0.117
 Number of features: 4
 Features:
-Feature_2 n=1116 response rate=0.0905017921147
-Feature_3 n=1075 response rate=0.106046511628
-Feature_1 n=5635 response rate=0.102395740905
-Feature_4 n=2174 response rate=0.0947562097516
+Value_4 n=210 response rate=0.1
+Value_1 n=580 response rate=0.120689655172
+Value_3 n=105 response rate=0.142857142857
+Value_2 n=105 response rate=0.104761904762
+
 ```
 
-At the same time, a plot is also generated:
-![Sample plot](TestedFeature-Feature_2014-07-19_233604.png)
+At the same time, a barchart is also generated:
+
+![Sample plot](TestedFeature-Test Feature_2014-07-19_235335.png)
