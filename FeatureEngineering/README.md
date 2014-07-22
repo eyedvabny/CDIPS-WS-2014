@@ -44,10 +44,10 @@ Visualizing the distribution of a selected feature, where the feature is borken 
 import FeatureTest as ft
 
 # Using with your data:
-numericalFeatureTest(feature, response, featureName="featureName", writeFile=True)
+ft.numericalFeatureTest(feature, response, featureName="featureName", writeFile=True)
 
 # To test function use the built in tester that simulate a feature with 4 values
-testNumericalFeatureTest(length=1000)
+ft.testNumericalFeatureTest(length=1000)
 
 ```
 
