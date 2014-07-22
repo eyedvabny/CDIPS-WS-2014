@@ -21,7 +21,7 @@ import os
 import random as rnd 
 
 # GetItems
-def getItems(fileName, itemsLimit, fields):
+def getItems(fileName, itemsLimit):
     """ 
     input:    
         fileName : name of the imput file train tsv
@@ -35,7 +35,7 @@ def getItems(fileName, itemsLimit, fields):
     
     """
     
-    with open( fileName) as items_fd:
+    with open(fileName) as items_fd:
 
         # The first read (if we need only a sample from the input) is 
         # just reading how many advertisement are there       
@@ -57,7 +57,6 @@ def getItems(fileName, itemsLimit, fields):
             if i in sampleIndexes:
                 item = {featureName:featureValue.decode('utf-8') for featureName,featureValue in item.iteritems()}            
                 itemNum += 1
-                #itemSelect = {k: item[k] for k in fields}
                 
                 yield itemNum, item
                 
