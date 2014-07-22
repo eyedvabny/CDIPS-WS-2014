@@ -11,6 +11,8 @@ from sklearn.metrics import classification_report
 from sklearn.cross_validation import train_test_split
 
 data = pd.read_table('/media/dillon/dinsfire/avito_train.tsv')
+#replace with file path to your training data
+
 features = pd.concat([pd.get_dummies(data.category), pd.get_dummies\
     (data.subcategory)],axis=1)
 features_train, features_test, target_train, target_test =\
