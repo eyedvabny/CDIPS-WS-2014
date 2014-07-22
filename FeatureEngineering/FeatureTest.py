@@ -2,17 +2,15 @@
 """
 A script to test features for machine learning.
 
-v. 1.0 Last modified: 07.19.2014 by Daniel Suveges
+v. 1.5 Last modified: 07.19.2014 by Daniel Suveges
     reads two arrays: feature and response
     calcuates the average response for each value of the feature
     creates a barchart, save png if desired
-    
+    bot for visualizing the correlation of categorical and numerical feature
     
 TODO:
     1) testing inputs if they are valid for the function
-    2) built-in test function    
-    2) not only categorical, but also for continous features as well 
-    eg. time interval, number of words etc.
+  
 
 """
 
@@ -20,6 +18,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import datetime
 import random
+import numpy as np
 
 def categoricalFeatureTest (feature, response, featureName = "Feature", writeFile=True):
     """
@@ -78,6 +77,46 @@ def categoricalFeatureTest (feature, response, featureName = "Feature", writeFil
         print key+" n="+str(featureCount[key])+" response rate="+str(featureRatio[key])
 
 
+def NumericalFeatutreTest(feature, response, featureName = "Feature", responseName = "Response", writeFile=True):
+    
+    # In the future, a more intensive errorhandling will be implemened to make
+    # sure the submitted arrays are proper
+    
+    # Dataframe is assambled from the input
+    df = pd.DataFrame({featureName : feature,
+                       responseName : response})
+                       
+    # getting extremes: 
+    bins = 100
+    minimum = min(feature)
+    maximum = max(feature)
+
+    resp1 = np.histogram(df[df.response == 1][featureName], bins=bins, range=(minimum, maximum), density=True)
+    resp0 = np.histogram(df[df.response == 0][featureName], bins=bins, range=(minimum, maximum), density=True)
+    
+    # Normalization of the values
+    
+    # PLotting response rates of each feature values:
+    now = datetime.datetime.now()
+    fig = plt.figure()
+    ax = plt.subplot(111)
+    plt.plot(resp1[1][:-1],resp1[0], "b-", label=responseName+"= 1, n="+str(len(df[df.response == 1][featureName])) )
+    plt.plot(resp0[1][:-1],resp0[0], "r-", label=responseName+"= 0, n="+str(len(df[df.response == 0][featureName])) )
+    ax.set_ylabel('Density', size=15)
+    ax.set_xlabel('Feature value', size=15)
+    ax.set_title('Testing numeric feature: '+featureName+"\n"+now.strftime("%m/%d %H:%M:%S"), size=15)
+    plt.legend(loc='upper right')
+    # If desired, the plot is saved:    
+    if writeFile:
+        filename = "TestedFeature-"+featureName+"_"+now.strftime("%Y-%m-%d_%H%M%S")+".png"
+        fig.savefig(filename,  )
+        
+    # Printing report:
+    print "Number of items: "+str(len(feature))    
+    print responseName+"= 1, count, mean, median = "+str(len(df[df.response == 1][featureName]))+ ", ",
+        +str(np.round(np.mean(df[df.response == 1][featureName]), 1))+ " ",
+        +str(np.round(np.median(df[df.response == 1][featureName]), 1))
+    print responseName+"= 0, count, mean, median = "+str(len(df[df.response == 0][featureName]))+ ", "+str(np.round(np.mean(df[df.response == 0][featureName]), 1))+ " "+str(np.round(np.median(df[df.response == 0][featureName]), 1))
 
 # Testing the tester :)
 def testCategoricalFeatutreTest(length=1000):
@@ -96,3 +135,42 @@ def testCategoricalFeatutreTest(length=1000):
     
     # calling categoricalFeatureTest
     categoricalFeatureTest(feature, response, featureName = "Test Feature", writeFile=True)
+    
+    
+# Testing the tester :)
+def testNumericalFeatutreTest(length=1000):
+    """
+    This function prepare a biased imput for numericalFeatureTest()
+    Two different distributions are mixed then shorted and visualized
+    """
+    
+    # distribution of the response:
+    f1 = 1000
+    f2 = 9000
+
+    # generating random distribution 1 response = 0
+    sigma1 = 14
+    mu1 = 35    
+    feature1 = [sigma1*np.random.randn()+mu1 for i in range(f1)]
+    resp1 = [0]*f1
+
+    # generating random distribution 2 response = 1
+    sigma2 = 50
+    mu2 = 75    
+    feature2 = [sigma2*np.random.randn()+mu2 for i in range(f2)]
+    resp2 = [1]*f2
+    
+    # mixing values
+    feature = feature1 + feature2
+    response = resp1 + resp2
+    random = np.random.permutation(f1+f2)
+    
+    feature_random = []
+    response_random = []
+    for i in random:
+        feature_random.append(feature[i])
+        response_random.append(response[i])
+
+    # submit for the test script
+    NumericalFeatutreTest(feature_random, response_random, featureName="test feature", writeFile=True)
+

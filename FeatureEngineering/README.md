@@ -7,13 +7,13 @@ Feature selection by testing the correlation between a categorical feature and a
 
 **Usage:**
 ```Python
-import FeatureTest
+import FeatureTest as ft
 
 # Using with your data:
-categoricalFeatureTest(feature, response, featureName="featureName", writeFile=True)
+ft.categoricalFeatureTest(feature, response, featureName="featureName", writeFile=True)
 
 # To test function use the built in tester that simulate a feature with 4 values
-testCategoricalFeatutreTest(length=1000)
+ft.testCategoricalFeatutreTest(length=1000)
 
 ```
 
@@ -33,3 +33,24 @@ Value_2 n=127 response rate=0.0944881889764
 At the same time, a barchart is also generated:
 
 ![Sample plot](TestedFeature-Test Feature_2014-07-19_235854.png)
+
+
+### testing numeric features
+
+Visualizing the distribution of a selected feature, where the feature is borken down according to the response variable
+
+**Usage:**
+```Python
+import FeatureTest as ft
+
+# Using with your data:
+ft.numericalFeatureTest(feature, response, featureName="featureName", writeFile=True)
+
+# To test function use the built in tester that simulate a feature with 4 values
+ft.testNumericalFeatureTest(length=1000)
+
+```
+
+Testing on the length of description feature:
+
+![Sample plot](TestedFeature-Length of description_2014-07-21_165329.png)
