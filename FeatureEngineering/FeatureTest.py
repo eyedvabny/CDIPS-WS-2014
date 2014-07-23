@@ -94,14 +94,12 @@ def NumericalFeatutreTest(feature, response, featureName = "Feature", responseNa
     resp1 = np.histogram(df[df.response == 1][featureName], bins=bins, range=(minimum, maximum), density=True)
     resp0 = np.histogram(df[df.response == 0][featureName], bins=bins, range=(minimum, maximum), density=True)
     
-    # Normalization of the values
-    
     # PLotting response rates of each feature values:
     now = datetime.datetime.now()
     fig = plt.figure()
     ax = plt.subplot(111)
     plt.plot(resp1[1][:-1],resp1[0], "b-", label=responseName+"= 1, n="+str(len(df[df.response == 1][featureName])) )
-    plt.plot(resp0[1][:-1],resp0[0], "r-", label=responseName+"= 0, n="+str(len(df[df.response == 0][featureName])) )
+    #plt.plot(resp0[1][:-1],resp0[0], "r-", label=responseName+"= 0, n="+str(len(df[df.response == 0][featureName])) )
     ax.set_ylabel('Density', size=15)
     ax.set_xlabel('Feature value', size=15)
     ax.set_title('Testing numeric feature: '+featureName+"\n"+now.strftime("%m/%d %H:%M:%S"), size=15)
@@ -111,12 +109,6 @@ def NumericalFeatutreTest(feature, response, featureName = "Feature", responseNa
         filename = "TestedFeature-"+featureName+"_"+now.strftime("%Y-%m-%d_%H%M%S")+".png"
         fig.savefig(filename,  )
         
-    # Printing report:
-    print "Number of items: "+str(len(feature))    
-    print responseName+"= 1, count, mean, median = "+str(len(df[df.response == 1][featureName]))+ ", ",
-        +str(np.round(np.mean(df[df.response == 1][featureName]), 1))+ " ",
-        +str(np.round(np.median(df[df.response == 1][featureName]), 1))
-    print responseName+"= 0, count, mean, median = "+str(len(df[df.response == 0][featureName]))+ ", "+str(np.round(np.mean(df[df.response == 0][featureName]), 1))+ " "+str(np.round(np.median(df[df.response == 0][featureName]), 1))
 
 # Testing the tester :)
 def testCategoricalFeatutreTest(length=1000):
