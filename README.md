@@ -26,6 +26,10 @@ The code will be stored in this repository, but please obtain the data from Kagg
 
 The code in sample.py has been modified to expect the above structure. If you commit modified paths, please let the others know, as doing so will likely break their workflow.
 
+##Notebooks
+
+[Preparing a smaller training and validation sets](http://nbviewer.ipython.org/github/eyedvabny/CDIPS-WS-2014/blob/master/gen_smaller_data.ipynb)
+
 ##Results
 The sample submission provided by Avito yields AP@k **0.05367**
 
