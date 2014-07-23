@@ -28,7 +28,8 @@ The code in sample.py has been modified to expect the above structure. If you co
 
 ##Notebooks
 
-[Preparing a smaller training and validation sets](http://nbviewer.ipython.org/github/eyedvabny/CDIPS-WS-2014/blob/master/gen_smaller_data.ipynb)
+* [Preparing a smaller training and validation sets](http://nbviewer.ipython.org/github/eyedvabny/CDIPS-WS-2014/blob/master/gen_smaller_data.ipynb)
+  * [The smaller sets](https://www.dropbox.com/sh/696pn8ce13n05r8/AACkv333ga5M4G6IeGRVBXSHa)
 
 ##Results
 The sample submission provided by Avito yields AP@k **0.05367**
