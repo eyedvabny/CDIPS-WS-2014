@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Logistic regression for Avito
+Lasso regression for Avito
 """
 __author__ = "deniederhut"
 __license__ = "GPL"
@@ -17,7 +17,8 @@ features = pd.get_dummies(data.subcategory)
 features_train, features_test, target_train, target_test =\
     train_test_split(features, data.is_blocked, test_size = 0.25)
 
-log = linear_model.LogisticRegression()
-log.fit(features_train, target_train)
-prediction = log.predict(features_test)
+lasso = linear_model.Lasso(alpha=0.1)
+lasso.fit(features_train, target_train)
+prediction_float = lasso.predict(features_test)
+prediction = np.round(prediction_float)
 print classification_report(target_test, prediction)
