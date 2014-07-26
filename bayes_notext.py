@@ -14,9 +14,9 @@ load FeatureEngineering/processFeatures_positive
 data = pd.read_table('/Users/dillonniederhut/Desktop/avito_train.tsv',nrows=100000)
 #replace with file path to your training data
 
-processed = pd.DataFrame({'urlbin' : url_cnt(data.urls_cnt), 'emailbin' : emails_cnt(data.emails_cnt), 'phonebin' : phone_cnt(data.phones_cnt), 'pricelog' : price(data.price)})
-features = pd.concat([pd.get_dummies(data.subcategory), processed], axis = 1)
+features = pd.concat([pd.get_dummies(data.subcategory), pd.DataFrame({'urlbin' : url_cnt(data.urls_cnt), 'emailbin' : emails_cnt(data.emails_cnt), 'phonebin' : phone_cnt(data.phones_cnt), 'pricelog' : price(data.price)})], axis = 1)
 features_train, features_test, target_train, target_test = train_test_split(features, data.is_blocked, test_size = 0.25)
+del data, features
 
 bayes = MultinomialNB()
 bayes.fit(features_train, target_train)

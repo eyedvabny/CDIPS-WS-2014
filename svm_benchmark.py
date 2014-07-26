@@ -21,3 +21,7 @@ svm = LinearSVC()
 svm.fit(features_train, target_train)
 prediction = np.round(svm.predict(features_test))
 print classification_report(target_test, prediction)
+
+coef = pd.DataFrame(svm.coef_)
+out = pd.concat([pd.DataFrame({'names' : features.columns}),np.abs(coef.T)],axis=1)
+out = out[out[[2]] > 0.612]
