@@ -8,10 +8,12 @@ import numpy as np
 import pandas as pd
 from sklearn import linear_model
 from sklearn.metrics import classification_report
+from sklearn.metrics import roc_auc_score
+from sklearn.metrics import average_precision_score
 from sklearn.cross_validation import train_test_split
 load FeatureEngineering/processFeatures
 
-data = pd.read_table('/Users/dillonniederhut/Desktop/avito_train.tsv',nrows=10000)
+data = pd.read_table('/media/dillon/dinsfire/avito_train.tsv')
 #replace with file path to your training data
 
 processed = pd.DataFrame({'urlbin' : url_cnt(data.urls_cnt), 'emailbin' : emails_cnt(data.emails_cnt), 'phonebin' : phone_cnt(data.phones_cnt), 'pricelog' : price(data.price)})
@@ -22,4 +24,6 @@ log = linear_model.LogisticRegression()
 log.fit(features_train, target_train)
 prediction = log.predict(features_test)
 print classification_report(target_test, prediction)
+print average_precision_score(target_test, prediction)
+print roc_auc_score(target_test, prediction)
 
