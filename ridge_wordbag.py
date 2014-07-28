@@ -14,19 +14,17 @@ from sklearn.metrics import classification_report
 from sklearn.cross_validation import train_test_split
 from sklearn.metrics import roc_auc_score
 from sklearn.metrics import average_precision_score
-load FeatureEngineering/processFeatures
 
 data = pd.read_table('/media/dillon/dinsfire/avito_train.tsv',nrows=10000)
 #replace with file path to your training data
 
+dummies = sparse.csc_matrix(pd.get_dummies(data.subcategory)
+del data
 vect = text.CountVectorizer(decode_error = u'ignore')
 corpus = np.array(data.description,str)
 counts = vect.fit_transform(corpus)
-tokens = pd.DataFrame(np.array(counts.toarray()), columns= vect.vocabulary_)
-
-features = pd.concat([pd.get_dummies(data.subcategory), pd.get_dummies(price(data.price)), tokens], axis = 1)
+features = sparse.hstack(dummies,counts))
 features_train, features_test, target_train, target_test = train_test_split(features, data.is_blocked, test_size = 0.25)
-del data, features
 
 ridge = RidgeClassifier()
 ridge.fit(features_train, target_train)
