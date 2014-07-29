@@ -21,7 +21,7 @@ from sklearn.cross_validation import train_test_split
 data = pd.read_table('/media/dillon/dinsfire/avito_train.tsv',nrows=1000)
 #replace with file path to your training data
 
-dummies = sparse.csc_matrix(pd.get_dummies(data.subcategory)
+dummies = sparse.csc_matrix(pd.get_dummies(data.subcategory))
 del data
 vect = text.CountVectorizer(decode_error = u'ignore')
 corpus = np.array(data.description,str)
