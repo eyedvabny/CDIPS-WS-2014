@@ -11,6 +11,9 @@ import re
 import nltk.corpus
 from nltk import SnowballStemmer
 
+# Use Pandas for parsing large tables
+import pandas as pd
+
 #Filter out useless (stop) words
 stopwords= frozenset(word.decode('utf-8') for word in nltk.corpus.stopwords.words("russian") if word!="не")    
 
@@ -29,6 +32,10 @@ def correctWord (w):
     """ Corrects word by replacing characters with written similarly depending on which language the word. 
         Fraudsters use this technique to avoid detection by anti-fraud algorithms."""
     
+    #Return an empty unicode string if w is not unicode
+    if not isinstance(w,unicode):
+        return u''
+
     # If number of russian letters is longer than number of english letters
     # Assume russian is the main language and translate the rogue english letter
     # Otherwise translate the rogue russian letters in english words
@@ -47,8 +54,12 @@ def getWords(text, stemmRequired = False, correctWordRequired = False):
     correctWordRequired : bool - flag whether correction of words required     
     """
     
-    # Change to lowercase and remove all non-alphabet characters
-    cleanText = re.sub(u'[^a-zа-я0-9]', ' ', text.lower())
+    #Return an empty unicode string if w is not unicode
+    if not isinstance(text,unicode):
+        return u''
+
+    # Change to lowercase and remove all non-alphanumeric characters
+    cleanText = re.sub(u'[^a-zа-я]', ' ', text.lower())
     
     # Check if we want to fix up mixed english-russian words
     if correctWordRequired:
@@ -57,4 +68,24 @@ def getWords(text, stemmRequired = False, correctWordRequired = False):
         words = [w if not stemmRequired else stemmer.stem(w) for w in cleanText.split() if len(w)>1 and w not in stopwords]
     
     return words
+
+def splitIntoWords(textSeries, stemmRequired = False, correctWordRequired = False):
+    """
+    Split an array of strings into one large unique series
+    -----------
+    textSeries: Pandas Series of unprocessed strings
+    stemmRequired : bool - flag whether stemming required
+    correctWordRequired : bool - flag whether correction of words required
+    """
+    # Convert the array into a list
+    string_list = textSeries.tolist()
+
+    # Run the function on every string in the list
+    word_list = [word for ugly_string in string_list for word in getWords(ugly_string)]
+    
+    # Filter out
+    return pd.Series(word_list).drop_duplicates()
+
+
+
 
