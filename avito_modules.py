@@ -81,7 +81,7 @@ def splitIntoWords(textSeries, stemmRequired = False, correctWordRequired = Fals
     string_list = textSeries.tolist()
 
     # Run the function on every string in the list
-    word_list = [word for ugly_string in string_list for word in getWords(ugly_string)]
+    word_list = [word for ugly_string in string_list for word in getWords(ugly_string,stemmRequired,correctWordRequired)]
     
     # Filter out
     return pd.Series(word_list).drop_duplicates()
