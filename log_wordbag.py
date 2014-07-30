@@ -18,22 +18,36 @@ from sklearn.metrics import roc_auc_score
 from sklearn.metrics import average_precision_score
 from sklearn.cross_validation import train_test_split
 
-data = pd.read_table('/media/dillon/dinsfire/avito_train.tsv',nrows=1000)
+data = pd.read_table('/Users/dillonniederhut/Desktop/avito_train.tsv',nrows=1000)
 #replace with file path to your training data
 
-dummies = sparse.csc_matrix(pd.get_dummies(data.subcategory)
-del data
+response = data.is_blocked
+dummies = sparse.csc_matrix(pd.get_dummies(data.subcategory))
 vect = text.CountVectorizer(decode_error = u'ignore')
 corpus = np.array(data.description,str)
+del data
 counts = vect.fit_transform(corpus)
-features = sparse.hstack(dummies,counts))
-features_train, features_test, target_train, target_test = train_test_split(features, data.is_blocked, test_size = 0.25)
+features = sparse.hstack((dummies,counts))
+features_train, features_test, target_train, target_test = train_test_split(features, response, test_size = 0.25)
 
-log = linear_model.LogisticRegression()
-log.fit(features_train, target_train)
-prediction = log.predict(features_test)
+clf = linear_model.LogisticRegression()
+clf.fit(features_train, target_train)
+prediction = clf.predict(features_test)
 print classification_report(target_test, prediction)
 print average_precision_score(target_test, prediction)
 print roc_auc_score(target_test, prediction)
+
+#stop here if you do not want to create a kaggle file
+
+test = pd.read_table('/Users/dillonniederhut/Desktop/avito_test.tsv')
+dummies = sparse.csc_matrix(pd.get_dummies(test.subcategory))
+vect = text.CountVectorizer(decode_error = u'ignore')
+corpus = np.array(test.description,str)
+del test
+counts = vect.fit_transform(corpus)
+testFeatures = sparse.hstack((dummies,counts))
+%run kaggle.py
+
+
 
 
