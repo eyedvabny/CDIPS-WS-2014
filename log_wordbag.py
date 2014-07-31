@@ -18,15 +18,20 @@ from sklearn.metrics import roc_auc_score
 from sklearn.metrics import average_precision_score
 from sklearn.cross_validation import train_test_split
 
-data = pd.read_table('/Users/dillonniederhut/Desktop/avito_train.tsv',nrows=1000)
+data = pd.read_table('/media/dillon/dinsfire/avito_train.tsv', nrows = 1000)
+test = pd.read_table('/media/dillon/dinsfire/avito_test.tsv', nrows = 1000)
 #replace with file path to your training data
 
 response = data.is_blocked
 dummies = sparse.csc_matrix(pd.get_dummies(data.subcategory))
+pretestdummies = pd.get_dummies(test.subcategory)
+testdummies = sparse.csc_matrix(efg.drop(['Растения', 'Товары для компьютера'],axis=1))
 vect = text.CountVectorizer(decode_error = u'ignore')
-corpus = np.array(data.description,str)
-del data
-counts = vect.fit_transform(corpus)
+corpus = np.concatenate((np.array(data.description,str), np.array(test.description,str)))
+del data, test
+vect.fit(corpus)
+counts = vect.transform(np.array(data.description,str))
+testcounts = vect.transform(np.array(test.description,str))
 features = sparse.hstack((dummies,counts))
 features_train, features_test, target_train, target_test = train_test_split(features, response, test_size = 0.25)
 
@@ -39,14 +44,14 @@ print roc_auc_score(target_test, prediction)
 
 #stop here if you do not want to create a kaggle file
 
-test = pd.read_table('/Users/dillonniederhut/Desktop/avito_test.tsv')
-dummies = sparse.csc_matrix(pd.get_dummies(test.subcategory))
-vect = text.CountVectorizer(decode_error = u'ignore')
+clf.fit(features, response)
 corpus = np.array(test.description,str)
 del test
-counts = vect.fit_transform(corpus)
-testFeatures = sparse.hstack((dummies,counts))
-%run kaggle.py
+counts = vect.transform(corpus)
+testFeatures = sparse.hstack((testdummies,testcounts))
+predicted_scores = clf.predict_proba(testFeatures).T[1]
+##predicted_scores needs to be formatted and written to .csv
+
 
 
 
