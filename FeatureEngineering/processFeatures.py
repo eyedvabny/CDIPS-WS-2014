@@ -86,3 +86,5 @@ def price(prices):
             pricesClear.append(int(np.log10(price)))
     
     return pricesClear
+    
+def length ()
