@@ -17,21 +17,25 @@ from sklearn.metrics import classification_report
 from sklearn.metrics import roc_auc_score
 from sklearn.metrics import average_precision_score
 from sklearn.cross_validation import train_test_split
+import os
 
-data = pd.read_table('/media/dillon/dinsfire/avito_train.tsv', nrows = 1000)
-test = pd.read_table('/media/dillon/dinsfire/avito_test.tsv', nrows = 1000)
+data = pd.read_table('/media/dillon/dinsfire/avito_train.tsv',nrows=1000)
+test = pd.read_table('/media/dillon/dinsfire/avito_test.tsv',nrows=1000)
 #replace with file path to your training data
 
+testItemIds = test.itemid
 response = data.is_blocked
 dummies = sparse.csc_matrix(pd.get_dummies(data.subcategory))
 pretestdummies = pd.get_dummies(test.subcategory)
-testdummies = sparse.csc_matrix(efg.drop(['Растения', 'Товары для компьютера'],axis=1))
-vect = text.CountVectorizer(decode_error = u'ignore')
-corpus = np.concatenate((np.array(data.description,str), np.array(test.description,str)))
+testdummies = sparse.csc_matrix(pretestdummies.drop(['Растения', 'Товары для компьютера'],axis=1))
+words = np.array(data.description,str)
+testwords = np.array(test.description,str)
 del data, test
+vect = text.CountVectorizer(decode_error = u'ignore',strip_accents='unicode',ngram_range=(1,2))
+corpus = np.concatenate((words, testwords))
 vect.fit(corpus)
-counts = vect.transform(np.array(data.description,str))
-testcounts = vect.transform(np.array(test.description,str))
+counts = vect.transform(words)
+
 features = sparse.hstack((dummies,counts))
 features_train, features_test, target_train, target_test = train_test_split(features, response, test_size = 0.25)
 
@@ -45,12 +49,16 @@ print roc_auc_score(target_test, prediction)
 #stop here if you do not want to create a kaggle file
 
 clf.fit(features, response)
-corpus = np.array(test.description,str)
-del test
-counts = vect.transform(corpus)
+testcounts = vect.transform(testwords)
 testFeatures = sparse.hstack((testdummies,testcounts))
 predicted_scores = clf.predict_proba(testFeatures).T[1]
-##predicted_scores needs to be formatted and written to .csv
+dataFolder = "~/Dropbox/pydir/CDIPS-WS-2014"
+output_file = "log_wordbag_solution.csv"
+f = open('/home/dillon/Dropbox/pydir/CDIPS-WS-2014/log_wordbag_solution.csv','w')
+f.write("id\n") 
+for pred_score, item_id in sorted(zip(predicted_scores, testItemIds), reverse = True):
+    f.write("%d\n" % (item_id))
+f.close()
 
 
 
