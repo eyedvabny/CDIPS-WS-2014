@@ -19,7 +19,7 @@ from sklearn.metrics import average_precision_score
 from sklearn.cross_validation import train_test_split
 import os
 
-def validate(input_train, rows=True, test=0.25)
+def validate(input_train, rows=True, test=0.25):
     """
     Takes file as input and returns classification report, average precision, and
     AUC for a bigram model. By default, loads all rows of a dataset, trains on .75,
@@ -29,7 +29,7 @@ def validate(input_train, rows=True, test=0.25)
     rows : True - loads all rows; insert an int for specific number of rows
     test : float proportion of dataset used for testing
     """
-    if rows = True:
+    if rows == True:
         data = pd.read_table(input_train)
     else:
         data = pd.read_table(input_train, nrows = rows)
@@ -46,7 +46,7 @@ def validate(input_train, rows=True, test=0.25)
     prediction = clf.predict(features_test)
     return classification_report(target_test, prediction), average_precision_score(target_test, prediction), roc_auc_score(target_test, prediction)
 
-def run(input_train, input_test, output_name)
+def run(input_train, input_test, output_name):
     """
     Takes a file path as input, a file path as output, and produces a sorted csv of
     item IDs for Kaggle submission
