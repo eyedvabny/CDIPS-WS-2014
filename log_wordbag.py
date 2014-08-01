@@ -76,9 +76,7 @@ def run(input_train, input_test, output_name):
     testcounts = vect.transform(testwords)
     testFeatures = sparse.hstack((testdummies,testcounts))
     predicted_scores = clf.predict_proba(testFeatures).T[1]
-    dataFolder = "~/Dropbox/pydir/CDIPS-WS-2014"
-    output_file = "log_wordbag_solution.csv"
-    f = open('/home/dillon/Dropbox/pydir/CDIPS-WS-2014/log_wordbag_solution.csv','w')
+    f = open(output_name,'w')
     f.write("id\n") 
     for pred_score, item_id in sorted(zip(predicted_scores, testItemIds), reverse = True):
         f.write("%d\n" % (item_id))
